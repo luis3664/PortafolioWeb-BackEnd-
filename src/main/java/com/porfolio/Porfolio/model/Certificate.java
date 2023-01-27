@@ -26,7 +26,9 @@ public class Certificate {
     @Temporal(TemporalType.DATE)
     private Date date;
     
-    // Constructor
+    // Constructors
+    public Certificate(){
+    }
     public Certificate(Integer id, String urlCertificate, Date date) {
         this.id = id;
         this.urlCertificate = urlCertificate;

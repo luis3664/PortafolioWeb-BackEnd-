@@ -22,7 +22,9 @@ public class Icon {
     private String identity;
     private String url;
     
-    // Constructor
+    // Constructors
+    public Icon(){
+    }
     public Icon(Integer id, String name, String identity, String url) {
         this.id = id;
         this.name = name;

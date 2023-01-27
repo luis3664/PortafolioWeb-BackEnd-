@@ -2,9 +2,9 @@
 package com.porfolio.Porfolio.controller;
 
 import com.porfolio.Porfolio.model.Bar;
-import com.porfolio.Porfolio.model.Icon;
 import com.porfolio.Porfolio.service.IBarService;
 import com.porfolio.Porfolio.service.IIconService;
+import com.porfolio.Porfolio.service.ITopicSkillService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,8 +26,11 @@ public class BarController {
     @Autowired
     IIconService intIcon;
     
+    @Autowired
+    ITopicSkillService intTopi;
+    
     @PostMapping ("/bar/add")
-    public String saveImg (@RequestBody Bar bar){
+    public String saveBar (@RequestBody Bar bar){
         intBar.crtBar(bar);
         return "Bar successfully created in directory.";
     }
@@ -40,18 +43,15 @@ public class BarController {
     
     @PutMapping ("/bar/{id}/update")
     public String updBar (@PathVariable Integer id,
-                        @RequestParam ("title") String title,
-                        @RequestParam ("svgBoolean") Boolean svgBoolean,
-                        @RequestParam ("value") Integer value,
-                        @RequestParam ("icon") Integer icon){
+                        @RequestBody Bar bar){
         
         Bar barNew = intBar.readBar(id);
-        Icon iconNew = intIcon.readIcon(icon);
         
-        barNew.setTitle(title);
-        barNew.setSvgBoolean(svgBoolean);
-        barNew.setValue(value);
-        barNew.setIcon(iconNew);
+        barNew.setTitle(bar.getTitle());
+        barNew.setSvgBoolean(bar.getSvgBoolean());
+        barNew.setValue(bar.getValue());
+        barNew.setIcon(bar.getIcon());
+        barNew.setTopicAssigned(bar.getTopicAssigned());
         
         intBar.crtBar(barNew);
         
@@ -64,10 +64,20 @@ public class BarController {
         return "Bar successfully removed from directory.";
     }
     
-    @GetMapping ("/Bar/readAll")
+    @GetMapping ("/bar/readAll")
     @ResponseBody
     public List<Bar> readAllBar (){
         return intBar.ReadAllBar();
+    }
+    
+    @PutMapping ("/bar/addIcon")
+    public String addIconB (@RequestParam Integer idBar,
+                            @RequestParam Integer idIcon){
+        Bar bar = intBar.readBar(idBar);
+        bar.setIcon(intIcon.readIcon(idIcon));
+        
+        intBar.crtBar(bar);
+        return "Operation performed satisfactorily.";
     }
     
 }

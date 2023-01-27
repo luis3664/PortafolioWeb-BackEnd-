@@ -1,6 +1,7 @@
 
 package com.porfolio.Porfolio.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +26,7 @@ public class Item {
     private String title;
     private String text;
     
+    @JsonIgnore
     @ManyToOne
     private Section secAssigI;
     
@@ -37,9 +39,14 @@ public class Item {
     @ManyToMany
     private List<Icon> iconAssigned;
     
+    @OneToOne
+    private TextCard textCard;
     
-    // Constructor
-    public Item(Integer id, String title, String text, Section secAssigI, Certificate certificate, List<Img> imgAssigned, List<Icon> iconAssigned) {
+    
+    // Constructors
+    public Item(){
+    }
+    public Item(Integer id, String title, String text, Section secAssigI, Certificate certificate, List<Img> imgAssigned, List<Icon> iconAssigned, TextCard textCard) {
         this.id = id;
         this.title = title;
         this.text = text;
@@ -47,6 +54,7 @@ public class Item {
         this.certificate = certificate;
         this.imgAssigned = imgAssigned;
         this.iconAssigned = iconAssigned;
+        this.textCard = textCard;
     }
 
 }

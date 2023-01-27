@@ -1,11 +1,14 @@
 
 package com.porfolio.Porfolio.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
@@ -24,18 +27,25 @@ public class Bar {
     private Boolean svgBoolean;
     private Integer value;
     
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne (fetch=FetchType.LAZY)
+    @JoinColumn (name="topic_assigned_id")
     private TopicSkill topicAssigned;
     
     @OneToOne
     private Icon icon;
+
     
-    // Constructor
-    public Bar(Integer id, String title, Boolean svgBoolean, Integer value) {
+    // Constructors
+    public Bar(){
+    }
+    public Bar(Integer id, String title, Boolean svgBoolean, Integer value, TopicSkill topicAssigned, Icon icon) {
         this.id = id;
         this.title = title;
         this.svgBoolean = svgBoolean;
         this.value = value;
+        this.topicAssigned = topicAssigned;
+        this.icon = icon;
     }
     
 }

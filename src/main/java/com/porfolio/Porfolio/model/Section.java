@@ -29,7 +29,9 @@ public class Section {
     @OneToMany (mappedBy="secAssigI")
     private List<Item> listItem;
     
-    // Constructor
+    // Constructors
+    public Section(){
+    }
     public Section(Integer id, String title, String imgUrl, List<TopicSkill> listTopic, List<Item> listItem) {
         this.id = id;
         this.title = title;

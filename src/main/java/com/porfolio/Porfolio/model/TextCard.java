@@ -11,23 +11,21 @@ import lombok.Setter;
 
 @Getter @Setter
 @Entity
-public class Img {
+public class TextCard {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     
     @Basic
-    private String name;
-    private String url;
-    
-    // Constructors
-    public Img(){
+    private String text;
+
+    public TextCard() {
     }
-    public Img(Integer id, String name, String url) {
+
+    public TextCard(Integer id, String text) {
         this.id = id;
-        this.name = name;
-        this.url = url;
+        this.text = text;
     }
     
 }

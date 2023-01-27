@@ -1,8 +1,12 @@
 
 package com.porfolio.Porfolio.controller;
 
+import com.porfolio.Porfolio.model.Item;
 import com.porfolio.Porfolio.model.Section;
+import com.porfolio.Porfolio.model.TopicSkill;
+import com.porfolio.Porfolio.service.IItemService;
 import com.porfolio.Porfolio.service.ISectionService;
+import com.porfolio.Porfolio.service.ITopicSkillService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,8 +25,14 @@ public class SectionController {
     @Autowired
     ISectionService intSec;
     
+    @Autowired
+    ITopicSkillService intTopi;
+    
+    @Autowired
+    IItemService intItem;
+    
     @PostMapping ("/sec/add")
-    public String saveImg (@RequestBody Section sec){
+    public String saveSec (@RequestBody Section sec){
         intSec.crtSection(sec);
         return "Section successfully created in directory.";
     }
@@ -34,14 +44,13 @@ public class SectionController {
     }
     
     @PutMapping ("/sec/{id}/update")
-    public String updImg (@PathVariable Integer id,
-                        @RequestParam ("title") String titleNew,
-                        @RequestParam ("imgUrl") String imgNew){
+    public String updSec (@PathVariable Integer id,
+                        @RequestBody Section sec){
         
         Section secNew = intSec.readSection(id);
         
-        secNew.setTitle(titleNew);
-        secNew.setImgUrl(imgNew);
+        secNew.setTitle(sec.getTitle());
+        secNew.setImgUrl(sec.getImgUrl());
         
         intSec.crtSection(secNew);
         
@@ -58,6 +67,40 @@ public class SectionController {
     @ResponseBody
     public List<Section> readAllSec (){
         return intSec.ReadAllSection();
+    }
+    
+    @PutMapping ("/sec/addTopic")
+    public String addTopicS (@RequestParam Integer idSec,
+                            @RequestParam Integer idTopic){
+        List<TopicSkill> listTopic = intSec.readSection(idSec).getListTopic();
+        TopicSkill topic = intTopi.readTopic(idTopic);
+        Section sec = intSec.readSection(idSec);
+        
+        listTopic.add(topic);
+        sec.setListTopic(listTopic);
+        intSec.crtSection(sec);
+        
+        topic.setSecAssigT(sec);
+        intTopi.crtTopic(topic);
+        
+        return "Operation performed satisfactorily.";
+    }
+    
+    @PutMapping ("/sec/addItem")
+    public String addItemS (@RequestParam Integer idSec,
+                            @RequestParam Integer idItem){
+        List<Item> listItem = intSec.readSection(idSec).getListItem();
+        Item item = intItem.readItem(idItem);
+        Section sec = intSec.readSection(idSec);
+        
+        listItem.add(item);
+        sec.setListItem(listItem);
+        intSec.crtSection(sec);
+        
+        item.setSecAssigI(sec);
+        intItem.crtItem(item);
+        
+        return "Operation performed satisfactorily.";
     }
     
 }
