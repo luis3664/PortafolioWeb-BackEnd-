@@ -5,6 +5,7 @@ import com.porfolio.Porfolio.model.Icon;
 import com.porfolio.Porfolio.service.IIconService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,15 +17,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200/")
 public class IconController {
     
     @Autowired
     IIconService intIcon;
     
     @PostMapping ("/icon/add")
-    public String saveIcon (@RequestBody Icon icon){
+    @ResponseBody
+    public Integer saveIcon (@RequestBody Icon icon){
         intIcon.crtIcon(icon);
-        return "ICON successfully created in directory.";
+        int index = intIcon.ReadAllIcon().size() -1;
+        List<Icon> list = intIcon.ReadAllIcon();
+        
+        return list.get(index).getId();
     }
     
     @GetMapping ("/icon/{id}")
@@ -33,15 +39,15 @@ public class IconController {
         return intIcon.readIcon(id);
     }
     
-    @PutMapping ("/icon/{id}/update")
-    public String updIcon (@PathVariable Integer id,
-                        @RequestParam ("name") String nameNew,
-                        @RequestParam ("identity") String ideNew){
+    @PutMapping ("/icon/update")
+    public String updIcon (@RequestBody Icon icon){
         
-        Icon iconNew = intIcon.readIcon(id);
+        Icon iconNew = intIcon.readIcon(icon.getId());
         
-        iconNew.setName(nameNew);
-        iconNew.setIdentity(ideNew);
+        iconNew.setName(icon.getName());
+        iconNew.setIdentity(icon.getIdentity());
+        iconNew.setSvg(icon.getSvg());
+        iconNew.setUrl(icon.getUrl());
         
         intIcon.crtIcon(iconNew);
         

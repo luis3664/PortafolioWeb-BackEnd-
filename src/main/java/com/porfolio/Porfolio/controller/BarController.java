@@ -48,7 +48,6 @@ public class BarController {
         Bar barNew = intBar.readBar(id);
         
         barNew.setTitle(bar.getTitle());
-        barNew.setSvgBoolean(bar.getSvgBoolean());
         barNew.setValue(bar.getValue());
         barNew.setIcon(bar.getIcon());
         barNew.setTopicAssigned(bar.getTopicAssigned());

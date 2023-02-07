@@ -24,7 +24,6 @@ public class Bar {
     
     @Basic
     private String title;
-    private Boolean svgBoolean;
     private Integer value;
     
     @JsonIgnore
@@ -39,10 +38,9 @@ public class Bar {
     // Constructors
     public Bar(){
     }
-    public Bar(Integer id, String title, Boolean svgBoolean, Integer value, TopicSkill topicAssigned, Icon icon) {
+    public Bar(Integer id, String title, Integer value, TopicSkill topicAssigned, Icon icon) {
         this.id = id;
         this.title = title;
-        this.svgBoolean = svgBoolean;
         this.value = value;
         this.topicAssigned = topicAssigned;
         this.icon = icon;

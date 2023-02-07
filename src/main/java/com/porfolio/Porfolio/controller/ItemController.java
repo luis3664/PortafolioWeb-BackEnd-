@@ -15,6 +15,7 @@ import com.porfolio.Porfolio.service.ISectionService;
 import com.porfolio.Porfolio.service.ITextCardService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200/")
 public class ItemController {
     
     @Autowired
@@ -58,18 +60,15 @@ public class ItemController {
         return intItem.readItem(id);
     }
     
-    @PutMapping ("/item/{id}/update")
-    public String updItem (@PathVariable Integer id,
-                        @RequestBody Item item){
+    @PutMapping ("/item/update")
+    public void updItem (@RequestBody Item item){
         
-        Item itemNew = intItem.readItem(id);
+        Item itemNew = intItem.readItem(item.getId());
         
         itemNew.setTitle(item.getTitle());
         itemNew.setText(item.getText());
         
         intItem.crtItem(itemNew);
-        
-        return "Updating successfully.";
     }
     
     @DeleteMapping ("/item/delete")
@@ -127,7 +126,8 @@ public class ItemController {
         return "Operation performed satisfactorily.";
     }
     
-    @PutMapping ("/item/addIcon")
+    @PostMapping ("/item/addIcon")
+    @ResponseBody
     public String addIconI (@RequestParam Integer idItem,
                         @RequestParam Integer idIcon){
         Icon icon = intIcon.readIcon(idIcon);
@@ -141,6 +141,18 @@ public class ItemController {
         return "Operation performed satisfactorily.";
     }
     
+    @DeleteMapping("/item/deleteIcon")
+    public void delIconI(@RequestParam Integer idItem,
+                        @RequestParam Integer idIcon){
+        Icon icon = intIcon.readIcon(idIcon);
+        Item item = intItem.readItem(idItem);
+        List<Icon> iconList = item.getIconAssigned();
+        
+        iconList.remove(icon);
+        item.setIconAssigned(iconList);
+        intItem.crtItem(item);
+    }
+    
     @PutMapping ("/item/addText")
     public String addTextCardI (@RequestParam Integer idItem,
                         @RequestParam Integer idText){
@@ -152,5 +164,5 @@ public class ItemController {
         
         return "Operation performed satisfactorily.";
     }
-    
+        
 }

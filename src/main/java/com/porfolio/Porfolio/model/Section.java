@@ -21,7 +21,6 @@ public class Section {
     
     @Basic
     private String title;
-    private String imgUrl;
     
     @OneToMany (mappedBy="secAssigT")
     private List<TopicSkill> listTopic;
@@ -32,10 +31,9 @@ public class Section {
     // Constructors
     public Section(){
     }
-    public Section(Integer id, String title, String imgUrl, List<TopicSkill> listTopic, List<Item> listItem) {
+    public Section(Integer id, String title, List<TopicSkill> listTopic, List<Item> listItem) {
         this.id = id;
         this.title = title;
-        this.imgUrl = imgUrl;
         this.listTopic = listTopic;
         this.listItem = listItem;
     }
