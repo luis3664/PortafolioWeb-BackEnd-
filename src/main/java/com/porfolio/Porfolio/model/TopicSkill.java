@@ -11,10 +11,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class TopicSkill {
     @Id
@@ -30,15 +35,4 @@ public class TopicSkill {
     
     @OneToMany (mappedBy="topicAssigned")
     private List<Bar> listBar = new ArrayList<>();
-    
-    // Constructors
-    public TopicSkill(){
-    }
-    public TopicSkill(Integer id, String title, Section secAssigT, List<Bar> listBar) {
-        this.id = id;
-        this.title = title;
-        this.secAssigT = secAssigT;
-        this.listBar = listBar;
-    }
-
 }

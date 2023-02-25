@@ -2,19 +2,18 @@
 package com.porfolio.Porfolio.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Basic;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Item {
     
@@ -41,20 +40,4 @@ public class Item {
     
     @OneToOne
     private TextCard textCard;
-    
-    
-    // Constructors
-    public Item(){
-    }
-    public Item(Integer id, String title, String text, Section secAssigI, Certificate certificate, List<Img> imgAssigned, List<Icon> iconAssigned, TextCard textCard) {
-        this.id = id;
-        this.title = title;
-        this.text = text;
-        this.secAssigI = secAssigI;
-        this.certificate = certificate;
-        this.imgAssigned = imgAssigned;
-        this.iconAssigned = iconAssigned;
-        this.textCard = textCard;
-    }
-
 }

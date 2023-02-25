@@ -14,8 +14,8 @@ public class ItemService implements IItemService {
     ItemRepository itemRepo;
     
     @Override
-    public void crtItem(Item item) {
-        itemRepo.save(item);
+    public Item crtItem(Item item) {
+        return itemRepo.saveAndFlush(item);
     }
 
     @Override

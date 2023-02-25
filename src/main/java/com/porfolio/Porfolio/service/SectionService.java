@@ -14,8 +14,8 @@ public class SectionService implements ISectionService {
     SectionRepository secRepo;
     
     @Override
-    public void crtSection(Section sec) {
-        secRepo.save(sec);
+    public Section crtSection(Section sec) {
+        return secRepo.saveAndFlush(sec);
     }
 
     @Override

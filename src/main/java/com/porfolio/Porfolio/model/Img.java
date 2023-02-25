@@ -6,10 +6,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Img {
     
@@ -20,14 +24,5 @@ public class Img {
     @Basic
     private String name;
     private String url;
-    
-    // Constructors
-    public Img(){
-    }
-    public Img(Integer id, String name, String url) {
-        this.id = id;
-        this.name = name;
-        this.url = url;
-    }
     
 }

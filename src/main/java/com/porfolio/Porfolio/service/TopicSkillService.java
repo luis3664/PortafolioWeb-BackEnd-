@@ -15,7 +15,7 @@ public class TopicSkillService implements ITopicSkillService {
     
     @Override
     public void crtTopic(TopicSkill topi) {
-        topRepo.save(topi);
+        topRepo.saveAndFlush(topi);
     }
 
     @Override

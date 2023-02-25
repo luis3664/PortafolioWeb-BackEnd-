@@ -1,31 +1,24 @@
 
 package com.porfolio.Porfolio.model;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class TextCard {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", unique = true, nullable = false)
     private Integer id;
     
     @Basic
     private String text;
 
-    public TextCard() {
-    }
-
-    public TextCard(Integer id, String text) {
-        this.id = id;
-        this.text = text;
-    }
-    
 }

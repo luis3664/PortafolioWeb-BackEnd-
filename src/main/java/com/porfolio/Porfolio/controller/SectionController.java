@@ -45,12 +45,10 @@ public class SectionController {
         return intSec.readSection(id);
     }
     
-    @PutMapping ("/sec/{id}/update")
-    @ResponseBody
-    public String updSec (@PathVariable Integer id,
-                        @RequestBody Section sec){
+    @PutMapping ("/sec/update")
+    public String updSec (@RequestBody Section sec){
         
-        Section secNew = intSec.readSection(id);
+        Section secNew = intSec.readSection(sec.getId());
         
         secNew.setTitle(sec.getTitle());
         
@@ -88,8 +86,8 @@ public class SectionController {
         return "Operation performed satisfactorily.";
     }
     
-    @PutMapping ("/sec/addItem")
-    public String addItemS (@RequestParam Integer idSec,
+    @PutMapping ("/sec/{idSec}/addItem")
+    public Item addItemS (@PathVariable Integer idSec,
                             @RequestParam Integer idItem){
         List<Item> listItem = intSec.readSection(idSec).getListItem();
         Item item = intItem.readItem(idItem);
@@ -102,7 +100,7 @@ public class SectionController {
         item.setSecAssigI(sec);
         intItem.crtItem(item);
         
-        return "Operation performed satisfactorily.";
+        return intItem.crtItem(item);
     }
     
 }

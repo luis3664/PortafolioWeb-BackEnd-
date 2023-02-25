@@ -13,6 +13,8 @@ import com.porfolio.Porfolio.service.IImgService;
 import com.porfolio.Porfolio.service.IItemService;
 import com.porfolio.Porfolio.service.ISectionService;
 import com.porfolio.Porfolio.service.ITextCardService;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -49,9 +51,12 @@ public class ItemController {
     ITextCardService intText;
     
     @PostMapping ("/item/add")
-    public String saveItem (@RequestBody Item item){
-        intItem.crtItem(item);
-        return "Item successfully created in directory.";
+    @ResponseBody
+    public Item saveItem (@RequestBody Item item){
+        item.setTextCard(null);
+        item.setImgAssigned(null);
+
+        return intItem.crtItem(item);
     }
     
     @GetMapping ("/item/{id}")
@@ -61,14 +66,18 @@ public class ItemController {
     }
     
     @PutMapping ("/item/update")
-    public void updItem (@RequestBody Item item){
+    public Item updItem (@RequestBody Item item){
         
         Item itemNew = intItem.readItem(item.getId());
         
         itemNew.setTitle(item.getTitle());
         itemNew.setText(item.getText());
-        
-        intItem.crtItem(itemNew);
+        itemNew.setCertificate(item.getCertificate());
+        itemNew.setTextCard(item.getTextCard());
+        itemNew.setIconAssigned(item.getIconAssigned());
+        itemNew.setImgAssigned(null);
+
+        return intItem.crtItem(itemNew);
     }
     
     @DeleteMapping ("/item/delete")
@@ -96,7 +105,8 @@ public class ItemController {
     }
     
     @PutMapping ("/item/addImg")
-    public String addImgI (@RequestParam Integer idItem,
+    @ResponseBody
+    public Item addImgI (@RequestParam Integer idItem,
                         @RequestParam Integer idImg){
         Img img = intImg.readImg(idImg);
         Item item = intItem.readItem(idItem);
@@ -104,9 +114,8 @@ public class ItemController {
         
         imgList.add(img);
         item.setImgAssigned(imgList);
-        intItem.crtItem(item);
-        
-        return "Operation performed satisfactorily.";
+
+        return intItem.crtItem(item);
     }
     
     @PutMapping ("/item/addSec")
@@ -122,7 +131,7 @@ public class ItemController {
         
         item.setSecAssigI(sec);
         intItem.crtItem(item);
-        
+
         return "Operation performed satisfactorily.";
     }
     
@@ -154,15 +163,14 @@ public class ItemController {
     }
     
     @PutMapping ("/item/addText")
-    public String addTextCardI (@RequestParam Integer idItem,
-                        @RequestParam Integer idText){
+    @ResponseBody
+    public Item addTextCardI (@RequestParam Integer idItem,
+                            @RequestParam Integer idText){
         TextCard text = intText.readText(idText);
         Item item = intItem.readItem(idItem);
         
         item.setTextCard(text);
-        intItem.crtItem(item);
-        
-        return "Operation performed satisfactorily.";
+        return intItem.crtItem(item);
     }
         
 }

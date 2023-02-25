@@ -15,7 +15,7 @@ public class BarService implements IBarService {
 
     @Override
     public void crtBar(Bar bar) {
-        barRepo.save(bar);
+        barRepo.saveAndFlush(bar);
     }
 
     @Override

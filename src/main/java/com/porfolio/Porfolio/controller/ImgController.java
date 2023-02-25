@@ -5,26 +5,24 @@ import com.porfolio.Porfolio.model.Img;
 import com.porfolio.Porfolio.service.IImgService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200/")
 public class ImgController {
     
     @Autowired
     IImgService intImg;
     
     @PostMapping ("/img/add")
-    public String saveImg (@RequestBody Img img){
-        intImg.crtImg(img);
-        return "IMG successfully created in directory.";
+    public Img saveImg (@RequestBody Img img){
+        List<Img> listImg = intImg.findByUrl(img.getUrl());
+
+        if(listImg.size() > 0){
+            return listImg.get(0);
+        }else {
+            return intImg.crtImg(img);
+        }
     }
     
     @GetMapping ("/img/{id}")
@@ -34,7 +32,7 @@ public class ImgController {
     }
     
     @PutMapping ("/img/{id}/update")
-    public String updImg (@PathVariable Integer id,
+    public Img updImg (@PathVariable Integer id,
                         @RequestParam ("name") String nameNew,
                         @RequestParam ("url") String urlNew){
         
@@ -42,10 +40,8 @@ public class ImgController {
         
         imgNew.setName(nameNew);
         imgNew.setUrl(urlNew);
-        
-        intImg.crtImg(imgNew);
-        
-        return "Updating successfully.";
+
+        return intImg.crtImg(imgNew);
     }
     
     @DeleteMapping ("/img/delete")

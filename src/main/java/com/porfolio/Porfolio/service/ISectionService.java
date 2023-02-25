@@ -7,7 +7,7 @@ import java.util.List;
 public interface ISectionService {
     
     // CRUD
-    public void crtSection (Section sec);
+    public Section crtSection (Section sec);
     public Section readSection (Integer id);
     public void delSection (Integer id);
     public List<Section> ReadAllSection ();

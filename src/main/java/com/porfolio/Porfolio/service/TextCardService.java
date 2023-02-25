@@ -14,8 +14,8 @@ public class TextCardService implements ITextCardService {
     TextCardRepository textRepo;
 
     @Override
-    public void crtText(TextCard text) {
-        textRepo.save(text);
+    public TextCard crtText(TextCard text) {
+        return textRepo.saveAndFlush(text);
     }
 
     @Override

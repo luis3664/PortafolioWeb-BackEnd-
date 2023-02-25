@@ -9,10 +9,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Certificate {
     
@@ -25,14 +30,5 @@ public class Certificate {
     
     @Temporal(TemporalType.DATE)
     private Date date;
-    
-    // Constructors
-    public Certificate(){
-    }
-    public Certificate(Integer id, String urlCertificate, Date date) {
-        this.id = id;
-        this.urlCertificate = urlCertificate;
-        this.date = date;
-    }
     
 }

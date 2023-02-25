@@ -8,10 +8,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.util.List;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Section {
     
@@ -27,15 +32,8 @@ public class Section {
     
     @OneToMany (mappedBy="secAssigI")
     private List<Item> listItem;
-    
-    // Constructors
-    public Section(){
-    }
-    public Section(Integer id, String title, List<TopicSkill> listTopic, List<Item> listItem) {
-        this.id = id;
-        this.title = title;
-        this.listTopic = listTopic;
-        this.listItem = listItem;
-    }
+
+//    @OneToMany (mappedBy = "secAssigC")
+//    private List<CardPresentation> listCardP
     
 }

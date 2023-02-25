@@ -14,8 +14,8 @@ public class ImgService implements IImgService {
     ImgRepository imgRepo;
     
     @Override
-    public void crtImg(Img img) {
-        imgRepo.save(img);
+    public Img crtImg(Img img) {
+        return imgRepo.saveAndFlush(img);
     }
 
     @Override
@@ -32,5 +32,10 @@ public class ImgService implements IImgService {
     public List<Img> ReadAllImg() {
         return imgRepo.findAll();
     }
-    
+
+    @Override
+    public List<Img> findByUrl(String url) {
+        return imgRepo.findAllByUrl(url);
+    }
+
 }

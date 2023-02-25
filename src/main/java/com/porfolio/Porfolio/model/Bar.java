@@ -11,10 +11,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Bar {
     
@@ -33,17 +37,5 @@ public class Bar {
     
     @OneToOne
     private Icon icon;
-
-    
-    // Constructors
-    public Bar(){
-    }
-    public Bar(Integer id, String title, Integer value, TopicSkill topicAssigned, Icon icon) {
-        this.id = id;
-        this.title = title;
-        this.value = value;
-        this.topicAssigned = topicAssigned;
-        this.icon = icon;
-    }
     
 }
