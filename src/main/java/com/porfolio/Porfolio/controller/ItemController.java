@@ -81,9 +81,8 @@ public class ItemController {
     }
     
     @DeleteMapping ("/item/delete")
-    public String delItem (@RequestParam Integer id){
+    public void delItem (@RequestParam Integer id){
         intItem.delItem(id);
-        return "Item successfully removed from directory.";
     }
     
     @GetMapping ("/item/readAll")
