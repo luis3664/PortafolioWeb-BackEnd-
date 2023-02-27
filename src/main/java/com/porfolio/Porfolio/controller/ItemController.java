@@ -58,6 +58,23 @@ public class ItemController {
 
         return intItem.crtItem(item);
     }
+
+    @PostMapping ("/item/addC")
+    @ResponseBody
+    public Item saveItemC (@RequestBody Item item,
+                           @RequestParam Integer idCertificate,
+                           @RequestParam Integer idImg){
+        List<Img> listImg = item.getImgAssigned();
+        listImg.add(intImg.readImg(idImg));
+
+        item.setCertificate(intCerti.readCertificate(idCertificate));
+        item.setImgAssigned(listImg);
+
+        Item itemNew = intItem.crtItem(item);
+        addSecI(itemNew.getId(), 3);
+
+        return itemNew;
+    }
     
     @GetMapping ("/item/{id}")
     @ResponseBody
@@ -78,6 +95,22 @@ public class ItemController {
         itemNew.setImgAssigned(null);
 
         return intItem.crtItem(itemNew);
+    }
+
+    @PutMapping ("/item/updateC")
+    @ResponseBody
+    public Item updtItemC (@RequestBody Item item,
+                           @RequestParam Integer idCertificate,
+                           @RequestParam Integer idImg){
+        List<Img> listImg = item.getImgAssigned();
+        listImg.add(intImg.readImg(idImg));
+
+        item.setCertificate(intCerti.readCertificate(idCertificate));
+        item.setImgAssigned(listImg);
+
+        Item itemNew = intItem.crtItem(item);
+
+        return itemNew;
     }
     
     @DeleteMapping ("/item/delete")

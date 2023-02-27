@@ -14,8 +14,8 @@ public class CertificateService implements ICertificateService {
     CertificateRepository certifRepo;
 
     @Override
-    public void crtCertificate(Certificate certif) {
-        certifRepo.saveAndFlush(certif);
+    public Certificate crtCertificate(Certificate certif) {
+        return certifRepo.saveAndFlush(certif);
     }
 
     @Override

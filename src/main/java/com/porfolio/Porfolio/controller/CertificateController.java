@@ -5,26 +5,18 @@ import com.porfolio.Porfolio.model.Certificate;
 import com.porfolio.Porfolio.service.ICertificateService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200/")
 public class CertificateController {
     
     @Autowired
     ICertificateService intCerti;
     
     @PostMapping ("/certificate/add")
-    public String saveCerti (@RequestBody Certificate certi){
-        intCerti.crtCertificate(certi);
-        return "Certificate successfully created in directory.";
+    public Certificate saveCerti (@RequestBody Certificate certi){
+        return intCerti.crtCertificate(certi);
     }
     
     @GetMapping ("/certificate/{id}")
@@ -34,17 +26,16 @@ public class CertificateController {
     }
     
     @PutMapping ("/certificate/{id}/update")
-    public String updCerti (@PathVariable Integer id,
+    @ResponseBody
+    public Certificate updCerti (@PathVariable Integer id,
                         @RequestBody Certificate certi){
         
         Certificate certiNew = intCerti.readCertificate(id);
         
         certiNew.setDate(certi.getDate());
         certiNew.setUrlCertificate(certi.getUrlCertificate());
-        
-        intCerti.crtCertificate(certiNew);
-        
-        return "Updating successfully.";
+
+        return intCerti.crtCertificate(certiNew);
     }
     
     @DeleteMapping ("/certificate/delete")
