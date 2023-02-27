@@ -46,7 +46,7 @@ public class SectionController {
     }
     
     @PutMapping ("/sec/update")
-    public String updSec (@RequestBody Section sec){
+    public void updSec (@RequestBody Section sec){
         
         Section secNew = intSec.readSection(sec.getId());
         
@@ -54,7 +54,7 @@ public class SectionController {
         
         intSec.crtSection(secNew);
         
-        return "Operation performed satisfactorily.";
+//        return "Operation performed satisfactorily.";
     }
     
     @DeleteMapping ("/sec/delete")
