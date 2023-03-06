@@ -14,8 +14,8 @@ public class IconService implements IIconService {
     IconRepository iconRepo;
 
     @Override
-    public void crtIcon(Icon icon) {
-        iconRepo.saveAndFlush(icon);
+    public Icon crtIcon(Icon icon) {
+        return iconRepo.saveAndFlush(icon);
     }
 
     @Override

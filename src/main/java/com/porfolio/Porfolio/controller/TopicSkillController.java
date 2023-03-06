@@ -2,22 +2,18 @@
 package com.porfolio.Porfolio.controller;
 
 import com.porfolio.Porfolio.model.Bar;
+import com.porfolio.Porfolio.model.Section;
 import com.porfolio.Porfolio.model.TopicSkill;
 import com.porfolio.Porfolio.service.IBarService;
+import com.porfolio.Porfolio.service.ISectionService;
 import com.porfolio.Porfolio.service.ITopicSkillService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200/")
 public class TopicSkillController {
     
     @Autowired
@@ -25,11 +21,19 @@ public class TopicSkillController {
     
     @Autowired
     IBarService intBar;
+
+    @Autowired
+    ISectionService intSec;
     
     @PostMapping ("/topic/add")
-    public String saveTopic (@RequestBody TopicSkill topic){
-        intTopi.crtTopic(topic);
-        return "Topic successfully created in directory.";
+    public TopicSkill saveTopic (@RequestBody TopicSkill topic){
+        TopicSkill topicNew = intTopi.crtTopic(topic);
+
+        Section sec = intSec.readSection(4);
+
+        topicNew.setSecAssigT(sec);
+
+        return intTopi.crtTopic(topicNew);
     }
     
     @GetMapping ("/topic/{id}")
@@ -39,24 +43,27 @@ public class TopicSkillController {
     }
     
     @PutMapping ("/topic/{id}/update")
-    public String updTopic (@PathVariable Integer id,
-                        @RequestBody TopicSkill topic){
+    public TopicSkill updTopic (@PathVariable Integer id,
+                                @RequestBody TopicSkill topic){
         
         TopicSkill topicNew = intTopi.readTopic(id);
         
         topicNew.setTitle(topic.getTitle());
-        topicNew.setSecAssigT(topic.getSecAssigT());
-        topicNew.setListBar(topic.getListBar());
         
-        intTopi.crtTopic(topicNew);
-        
-        return "Updating successfully.";
+        return intTopi.crtTopic(topicNew);
     }
     
     @DeleteMapping ("/topic/delete")
-    public String delTopic (@RequestParam Integer id){
+    @ResponseStatus (HttpStatus.ACCEPTED)
+    public void delTopic (@RequestParam Integer id){
+        TopicSkill topic = readTopic(id);
+
+        for (int i = 0; i < topic.getListBar().size(); i++) {
+            intBar.delBar(topic.getListBar().get(i).getId());
+        }
+        topic.setListBar(null);
+        intTopi.crtTopic(topic);
         intTopi.delTopic(id);
-        return "Topic successfully removed from directory.";
     }
     
     @GetMapping ("/topic/readAll")
@@ -66,15 +73,13 @@ public class TopicSkillController {
     }
     
     @PutMapping ("/topic/addBar")
-    public String addBarT (@RequestParam Integer idTopic,
+    public Bar addBarT (@RequestParam Integer idTopic,
                            @RequestParam Integer idBar){
         TopicSkill topic = intTopi.readTopic(idTopic);
         Bar bar = intBar.readBar(idBar);
 
         bar.setTopicAssigned(topic);
-        intBar.crtBar(bar);
-        
-        return "Operation performed satisfactorily.";
+        return intBar.crtBar(bar);
     }
     
 }

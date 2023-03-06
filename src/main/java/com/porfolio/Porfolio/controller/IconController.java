@@ -40,7 +40,7 @@ public class IconController {
     }
     
     @PutMapping ("/icon/update")
-    public String updIcon (@RequestBody Icon icon){
+    public Icon updIcon (@RequestBody Icon icon){
         
         Icon iconNew = intIcon.readIcon(icon.getId());
         
@@ -48,10 +48,8 @@ public class IconController {
         iconNew.setIdentity(icon.getIdentity());
         iconNew.setSvg(icon.getSvg());
         iconNew.setUrl(icon.getUrl());
-        
-        intIcon.crtIcon(iconNew);
-        
-        return "Updating successfully.";
+
+        return intIcon.crtIcon(iconNew);
     }
     
     @DeleteMapping ("/icon/delete")

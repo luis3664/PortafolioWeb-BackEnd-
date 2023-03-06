@@ -7,7 +7,7 @@ import java.util.List;
 public interface IBarService {
     
     // CRUD
-    public void crtBar (Bar bar);
+    public Bar crtBar (Bar bar);
     public Bar readBar (Integer id);
     public void delBar (Integer id);
     public List<Bar> ReadAllBar ();

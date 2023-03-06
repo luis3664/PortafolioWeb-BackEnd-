@@ -1,6 +1,7 @@
 
 package com.porfolio.Porfolio.service;
 
+import com.porfolio.Porfolio.model.ArrayImg;
 import com.porfolio.Porfolio.model.Img;
 import com.porfolio.Porfolio.repository.ImgRepository;
 import java.util.List;
@@ -36,6 +37,11 @@ public class ImgService implements IImgService {
     @Override
     public List<Img> findByUrl(String url) {
         return imgRepo.findAllByUrl(url);
+    }
+
+    @Override
+    public List<Img> crtImgAll(ArrayImg images) {
+        return imgRepo.saveAllAndFlush(images.getImgList());
     }
 
 }

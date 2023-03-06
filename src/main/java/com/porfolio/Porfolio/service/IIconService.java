@@ -7,7 +7,7 @@ import java.util.List;
 public interface IIconService {
     
     // CRUD
-    public void crtIcon (Icon icon);
+    public Icon crtIcon (Icon icon);
     public Icon readIcon (Integer id);
     public void delIcon (Integer id);
     public List<Icon> ReadAllIcon ();

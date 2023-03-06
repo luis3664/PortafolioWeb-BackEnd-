@@ -7,7 +7,7 @@ import java.util.List;
 public interface ITopicSkillService {
     
     // CRUD
-    public void crtTopic (TopicSkill topi);
+    public TopicSkill crtTopic (TopicSkill topi);
     public TopicSkill readTopic (Integer id);
     public void delTopic (Integer id);
     public List<TopicSkill> ReadAllTopic ();

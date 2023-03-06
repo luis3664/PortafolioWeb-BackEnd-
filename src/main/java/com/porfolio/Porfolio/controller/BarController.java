@@ -2,22 +2,16 @@
 package com.porfolio.Porfolio.controller;
 
 import com.porfolio.Porfolio.model.Bar;
+import com.porfolio.Porfolio.model.Icon;
 import com.porfolio.Porfolio.service.IBarService;
 import com.porfolio.Porfolio.service.IIconService;
 import com.porfolio.Porfolio.service.ITopicSkillService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200/")
 public class BarController {
     
     @Autowired
@@ -30,9 +24,16 @@ public class BarController {
     ITopicSkillService intTopi;
     
     @PostMapping ("/bar/add")
-    public String saveBar (@RequestBody Bar bar){
-        intBar.crtBar(bar);
-        return "Bar successfully created in directory.";
+    @ResponseBody
+    public Integer saveBar (@RequestParam Integer idIcon,
+                        @RequestBody Bar bar){
+        bar.setIcon(null);
+        Bar barNew = intBar.crtBar(bar);
+        Icon icon = intIcon.readIcon(idIcon);
+
+        barNew = addIconB(barNew.getId(), icon.getId());
+
+        return barNew.getId();
     }
     
     @GetMapping ("/bar/{id}")
@@ -42,7 +43,8 @@ public class BarController {
     }
     
     @PutMapping ("/bar/{id}/update")
-    public String updBar (@PathVariable Integer id,
+    public Bar updBar (@PathVariable Integer id,
+                        @RequestParam Integer idIcon,
                         @RequestBody Bar bar){
         
         Bar barNew = intBar.readBar(id);
@@ -50,17 +52,13 @@ public class BarController {
         barNew.setTitle(bar.getTitle());
         barNew.setValue(bar.getValue());
         barNew.setIcon(bar.getIcon());
-        barNew.setTopicAssigned(bar.getTopicAssigned());
-        
-        intBar.crtBar(barNew);
-        
-        return "Updating successfully.";
+
+        return intBar.crtBar(barNew);
     }
     
     @DeleteMapping ("/bar/delete")
-    public String delBar (@RequestParam Integer id){
-        intBar.delBar(id);
-        return "Bar successfully removed from directory.";
+    public void delBar (@RequestParam Integer idBar){
+        intBar.delBar(idBar);
     }
     
     @GetMapping ("/bar/readAll")
@@ -70,13 +68,12 @@ public class BarController {
     }
     
     @PutMapping ("/bar/addIcon")
-    public String addIconB (@RequestParam Integer idBar,
+    public Bar addIconB (@RequestParam Integer idBar,
                             @RequestParam Integer idIcon){
         Bar bar = intBar.readBar(idBar);
         bar.setIcon(intIcon.readIcon(idIcon));
-        
-        intBar.crtBar(bar);
-        return "Operation performed satisfactorily.";
+
+        return intBar.crtBar(bar);
     }
     
 }

@@ -17,16 +17,7 @@ import com.porfolio.Porfolio.service.ITextCardService;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200/")
@@ -72,6 +63,35 @@ public class ItemController {
 
         Item itemNew = intItem.crtItem(item);
         addSecI(itemNew.getId(), 3);
+
+        return itemNew;
+    }
+
+    @PostMapping ("/item/addP")
+    @ResponseBody
+    public Item saveItemP (@RequestBody Item item,
+                           @RequestParam Integer idText,
+                           @RequestParam Integer length,
+                           @RequestParam Integer idImg1,
+                           @RequestParam Integer idImg2,
+                           @RequestParam Integer idImg3){
+        List<Img> listImg = item.getImgAssigned();
+        if (length == 1){
+            listImg.add(intImg.readImg(idImg1));
+        } else if (length == 2) {
+            listImg.add(intImg.readImg(idImg1));
+            listImg.add(intImg.readImg(idImg2));
+        } else if (length == 3) {
+            listImg.add(intImg.readImg(idImg1));
+            listImg.add(intImg.readImg(idImg2));
+            listImg.add(intImg.readImg(idImg3));
+        };
+
+        item.setTextCard(intText.readText(idText));
+        item.setImgAssigned(listImg);
+
+        Item itemNew = intItem.crtItem(item);
+        addSecI(itemNew.getId(), 1);
 
         return itemNew;
     }
