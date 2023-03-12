@@ -1,7 +1,6 @@
 
 package com.porfolio.Porfolio.controller;
 
-import com.porfolio.Porfolio.model.ArrayImg;
 import com.porfolio.Porfolio.model.Img;
 import com.porfolio.Porfolio.service.IImgService;
 import java.util.List;
@@ -24,23 +23,6 @@ public class ImgController {
         }else {
             return intImg.crtImg(img);
         }
-    }
-
-    @PostMapping ("/img/addAll")
-    @ResponseBody
-    public List<Img> saveAllImg (ArrayImg images) {
-        List<Img> listImg = null;
-
-        for (var i = 0; i < images.getImgList().size(); i++) {
-            if(intImg.findByUrl(images.getImgList().get(i).getUrl()).size() > 0){
-                List<Img> j = intImg.findByUrl(images.getImgList().get(i).getUrl());
-                listImg.add(j.get(0));
-            }else {
-                listImg.add(intImg.crtImg(images.getImgList().get(i)));
-            }
-        }
-
-        return listImg;
     }
     
     @GetMapping ("/img/{id}")

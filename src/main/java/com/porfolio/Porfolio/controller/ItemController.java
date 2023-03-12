@@ -69,28 +69,30 @@ public class ItemController {
 
     @PostMapping ("/item/addP")
     @ResponseBody
-    public Item saveItemP (@RequestBody Item item,
-                           @RequestParam Integer idText,
-                           @RequestParam Integer length,
-                           @RequestParam Integer idImg1,
-                           @RequestParam Integer idImg2,
-                           @RequestParam Integer idImg3){
-        List<Img> listImg = item.getImgAssigned();
-        if (length == 1){
-            listImg.add(intImg.readImg(idImg1));
-        } else if (length == 2) {
-            listImg.add(intImg.readImg(idImg1));
-            listImg.add(intImg.readImg(idImg2));
-        } else if (length == 3) {
-            listImg.add(intImg.readImg(idImg1));
-            listImg.add(intImg.readImg(idImg2));
-            listImg.add(intImg.readImg(idImg3));
-        };
+    public Item saveItemP (@RequestBody Item item){
 
-        item.setTextCard(intText.readText(idText));
-        item.setImgAssigned(listImg);
+        List<Img> listImg = new ArrayList<Img>();
+        TextCard text = intText.crtText(item.getTextCard());
+        Item itemNew = new Item();
 
-        Item itemNew = intItem.crtItem(item);
+        if (item.getImgAssigned().size() > 0) {
+            for (int i = 0; i < item.getImgAssigned().size(); i++) {
+                List<Img> aux = intImg.findByUrl(item.getImgAssigned().get(i).getUrl());
+
+                if (aux.size() > 0) {
+                    listImg.add(aux.get(0));
+                } else {
+                    listImg.add(intImg.crtImg(item.getImgAssigned().get(i)));
+                };
+            };
+        }
+
+        itemNew.setTitle(item.getTitle());
+        itemNew.setText(item.getText());
+        itemNew.setImgAssigned(listImg);
+        itemNew.setTextCard(text);
+
+        itemNew = intItem.crtItem(itemNew);
         addSecI(itemNew.getId(), 1);
 
         return itemNew;
@@ -113,6 +115,33 @@ public class ItemController {
         itemNew.setTextCard(item.getTextCard());
         itemNew.setIconAssigned(item.getIconAssigned());
         itemNew.setImgAssigned(null);
+
+        return intItem.crtItem(itemNew);
+    }
+
+    @PutMapping ("/item/updateP")
+    @ResponseBody
+    public Item updItemP (@RequestBody Item item){
+        Item itemNew = intItem.readItem(item.getId());
+        List<Img> listImg = new ArrayList<Img>();
+        TextCard text = item.getTextCard();
+
+        if (item.getImgAssigned().size() > 0) {
+            for (int i = 0; i < item.getImgAssigned().size(); i++) {
+                List<Img> aux = intImg.findByUrl(item.getImgAssigned().get(i).getUrl());
+
+                if (aux.size() > 0) {
+                    listImg.add(aux.get(0));
+                } else {
+                    listImg.add(intImg.crtImg(item.getImgAssigned().get(i)));
+                };
+            };
+        };
+
+        text = intText.crtText(text);
+
+        itemNew.setTextCard(text);
+        itemNew.setImgAssigned(listImg);
 
         return intItem.crtItem(itemNew);
     }
